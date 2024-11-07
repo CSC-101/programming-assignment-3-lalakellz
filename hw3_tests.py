@@ -3,6 +3,7 @@ import build_data
 import unittest
 
 
+
 # These two values are defined to support testing below. The
 # data within these structures should not be modified. Doing
 # so will affect later tests.
@@ -175,18 +176,48 @@ reduced_data = [
         'WY')
     ]
 
-class TestCases(unittest.TestCase):
-    pass
 
-    # Part 1
-    # test population_total
+from county_demographics import get_report
+from build_data import get_data
+from hw3 import population_total, filter_by_state, population_by_education, population_by_ethnicity
+# Part 1
+# test population_total
+class TestPopulationTotal(unittest.TestCase):
+    pass
+    def test_population(self):
+        counties = get_data()
+        total_population = population_total(counties)
+        self.assertEqual(total_population, 318857056)
+
+    def test_population_2(self):
+        counties = get_data()
+        ca_counties = [county for county in counties if county.state == "CA"]
+        total_population = population_total(ca_counties)
+        self.assertEqual(total_population, 38802500)
 
     # Part 2
     # test filter_by_state
+    def test_filter_by_state(self):
+        counties = get_data()
+        california_counties = filter_by_state(counties, 'CA')
+        self.assertEqual(len(california_counties), 58)
+
+    def test_filter_by_state_2(self):
+        counties = get_data()
+        nonexistent_state_counties = filter_by_state(counties, 'XX')  # XX is a non-existent state code
+        self.assertEqual(len(nonexistent_state_counties), 0)
 
     # Part 3
     # test population_by_education
+    def test_population_by_education(self):
+        # Load data and test population with "Bachelor's Degree or Higher"
+        counties = get_report()
+        total_population_bachelors = population_by_education(counties, "Bachelor's Degree or Higher")
+        self.assertAlmostEqual(total_population_bachelors, 87911.145, places=3)
+
     # test population_by_ethnicity
+    def test_population_by_ethnicity(self):
+
     # test population_below_poverty_level
 
     # Part 4
