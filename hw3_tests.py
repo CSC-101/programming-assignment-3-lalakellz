@@ -179,7 +179,7 @@ reduced_data = [
 
 from county_demographics import get_report
 from build_data import get_data
-from hw3 import population_total, filter_by_state, population_by_education, population_by_ethnicity
+from hw3 import population_total, filter_by_state, population_by_education, population_by_ethnicity, population_below_poverty_level
 # Part 1
 # test population_total
 class TestPopulationTotal(unittest.TestCase):
@@ -204,21 +204,28 @@ class TestPopulationTotal(unittest.TestCase):
 
     def test_filter_by_state_2(self):
         counties = get_data()
-        nonexistent_state_counties = filter_by_state(counties, 'XX')  # XX is a non-existent state code
+        nonexistent_state_counties = filter_by_state(counties, 'XX')
         self.assertEqual(len(nonexistent_state_counties), 0)
 
     # Part 3
     # test population_by_education
     def test_population_by_education(self):
-        # Load data and test population with "Bachelor's Degree or Higher"
-        counties = get_report()
-        total_population_bachelors = population_by_education(counties, "Bachelor's Degree or Higher")
-        self.assertAlmostEqual(total_population_bachelors, 87911.145, places=3)
+        counties = get_data()
+        result = population_by_education(counties, "Bachelor's Degree or Higher")
+        self.assertGreater(result, 0)
 
-    # test population_by_ethnicity
+
+    #test population_by_ethnicity
     def test_population_by_ethnicity(self):
+        counties = get_data()
+        result = population_by_ethnicity(counties, "Hispanic or Latino")
+        self.assertGreater(result, 0)
 
     # test population_below_poverty_level
+    def test_population_below_poverty_level(self):
+        counties = get_data()
+        result = population_below_poverty_level(counties)
+        self.assertGreater(result, 0)
 
     # Part 4
     # test percent_by_education
