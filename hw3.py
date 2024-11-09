@@ -1,4 +1,5 @@
 from data import CountyDemographics
+from hw3_tests import reduced_data
 
 #part 1
 # Function to calculate the total 2014 population across a list of counties
@@ -30,9 +31,6 @@ def population_by_education(counties: list[CountyDemographics], education_key: s
             total_population += sub_population
     return total_population
 
-# Function to calculate the total population for a given ethnicity key
-# input: list of CountyDemographics objects, ethnicity key (string)
-# output: total population for the given ethnicity key
 # Function to calculate the total subpopulation by ethnicity
 # input: list of CountyDemographics objects, the key for ethnicity of interest as a string
 # output: float value of the total 2014 subpopulation for the specified ethnicity
@@ -77,11 +75,66 @@ def percent_by_education(counties, education_key):
 # Function to calculate the percentage of a sub-population for a given ethnicity key
 # input: list of CountyDemographics, ethnicity key (str)
 # output: percentage of population for the specified ethnicity
-def percent_by_ethnicity(counties, ethnicity_key):
-    total_population = population_total(counties)  # Get the total 2014 population
-    ethnicity_population = population_by_ethnicity(counties, ethnicity_key)
+def percent_by_ethnicity(counties: list[CountyDemographics], ethnicity_key: str) -> float:
+    # Get the total 2014 population across all counties
+    total_population = population_total(counties)
+    # Calculate the total population for the specified ethnicity key
+    ethnicity_population = sum(county.ethnicities.get(ethnicity_key, 0) * county.population['2014 Population']
+                               / 100 for county in counties)
+    # Avoid division by zero if total_population is zero
     if total_population == 0:
-        return 0  # Avoid division by zero if there's no total population
+        return 0.0
     # Calculate and return the percentage
     return (ethnicity_population / total_population) * 100
 
+#Function: Calculates the percentage of people below poverty level across a set of counties.
+#Input: List of CountyDemographics objects.
+# #Output: Float representing the percentage of the 2014 population below the poverty level.
+def percent_below_poverty_level(counties: list[CountyDemographics]) -> float:
+    # Get the total 2014 population across all counties
+    total_population = population_total(counties)
+    # Calculate the total population below the poverty level
+    poverty_population = sum(county.income.get('Persons Below Poverty Level', 0) * county.population['2014 Population']
+                             / 100 for county in counties)
+    # Avoid division by zero if total_population is zero
+    if total_population == 0:
+        return 0.0
+    # Calculate and return the percentage
+    return (poverty_population / total_population) * 100
+
+#part 5
+    #Function: Returns counties where the specified education key percentage is greater than the threshold.
+    #Input: List of CountyDemographics, education key as a string, and a numeric threshold.
+    #Output: List of CountyDemographics that meet the condition.
+def education_greater_than(counties: list[CountyDemographics], education_key: str, threshold: float) -> list[CountyDemographics]:
+    return [county for county in counties if county.education.get(education_key, 0) > threshold]
+
+    #Function: Returns counties where the specified education key percentage is less than the threshold.
+    #Input: List of CountyDemographics, education key as a string, and a numeric threshold.
+    #Output: List of CountyDemographics that meet the condition.
+def education_less_than(counties: list[CountyDemographics], education_key: str, threshold: float) -> list[CountyDemographics]:
+    return [county for county in counties if county.education.get(education_key, 0) < threshold]
+
+# Function: Filters counties based on whether their specified ethnicity percentage is greater than a given threshold.
+# Input: A list of CountyDemographics objects, an ethnicity key (string), and a numeric threshold (float).
+# Output: List of CountyDemographics objects where the specified ethnicity percentage is greater than the threshold.
+def ethnicity_greater_than(counties, ethnicity_key, threshold):
+    return [county for county in counties if county.ethnicities.get(ethnicity_key, 0) > threshold]
+
+# Function: Filters counties based on whether their specified ethnicity percentage is less than a given threshold.
+# Input: A list of CountyDemographics objects, an ethnicity key (string), and a numeric threshold (float).
+# Output: List of CountyDemographics objects where the specified ethnicity percentage is less than the threshold.
+def ethnicity_less_than(counties, ethnicity_key, threshold):
+    return [county for county in counties if county.ethnicities.get(ethnicity_key, 0) < threshold]
+
+# Function: Filters counties based on whether their 'Persons Below Poverty Level' percentage is greater than a given threshold.
+# Input: A list of CountyDemographics objects, and a numeric threshold (float).
+# Output: List of CountyDemographics objects where 'Persons Below Poverty Level' is greater than the threshold.
+def below_poverty_level_greater_than(counties, threshold):
+    return [county for county in counties if county.income.get('Persons Below Poverty Level', 0) > threshold]
+
+# Function: Filters counties based on whether their 'Persons Below Poverty Level' percentage is less than a given threshold.
+# Input: A list of CountyDemographics objects, and a numeric threshold (float).
+# Output: List of CountyDemographics objects where 'Persons Below Poverty Level' is less than the threshold.
+def below_poverty_level_less_than(counties, threshold):
+    return [county for county in counties if county.income.get('Persons Below Poverty Level', 0) < threshold]
