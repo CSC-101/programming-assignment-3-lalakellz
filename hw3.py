@@ -121,20 +121,20 @@ def education_less_than(counties: list[CountyDemographics], education_key: str, 
 def ethnicity_greater_than(counties, ethnicity_key, threshold):
     return [county for county in counties if county.ethnicities.get(ethnicity_key, 0) > threshold]
 
-# Function: Filters counties based on whether their specified ethnicity percentage is less than a given threshold.
-# Input: A list of CountyDemographics objects, an ethnicity key (string), and a numeric threshold (float).
-# Output: List of CountyDemographics objects where the specified ethnicity percentage is less than the threshold.
+# Function: Filters counties based on whether their specified ethnicity percentage is less than a given threshold
+# Input: A list of CountyDemographics objects, an ethnicity key (string), and a numeric threshold
+# Output: List of CountyDemographics objects where the specified ethnicity percentage is less than the threshold
 def ethnicity_less_than(counties, ethnicity_key, threshold):
     return [county for county in counties if county.ethnicities.get(ethnicity_key, 0) < threshold]
 
-# Function: Filters counties based on whether their 'Persons Below Poverty Level' percentage is greater than a given threshold.
-# Input: A list of CountyDemographics objects, and a numeric threshold (float).
-# Output: List of CountyDemographics objects where 'Persons Below Poverty Level' is greater than the threshold.
+# Function: Filters counties based on whether their 'Persons Below Poverty Level' percentage is greater than a given threshold
+# Input: A list of CountyDemographics objects
+# Output: List of CountyDemographics objects
 def below_poverty_level_greater_than(counties, threshold):
     return [county for county in counties if county.income.get('Persons Below Poverty Level', 0) > threshold]
 
-# Function: Filters counties based on whether their 'Persons Below Poverty Level' percentage is less than a given threshold.
-# Input: A list of CountyDemographics objects, and a numeric threshold (float).
-# Output: List of CountyDemographics objects where 'Persons Below Poverty Level' is less than the threshold.
+# Function: Filters counties based on whether their 'Persons Below Poverty Level' percentage is less than a given threshold
+# Input: A list of CountyDemographics objects
+# Output: List of CountyDemographics objects
 def below_poverty_level_less_than(counties, threshold):
     return [county for county in counties if county.income.get('Persons Below Poverty Level', 0) < threshold]

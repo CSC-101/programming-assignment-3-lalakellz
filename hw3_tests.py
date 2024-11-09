@@ -184,7 +184,7 @@ from hw3 import (population_total, filter_by_state, population_by_education, pop
                  percent_by_ethnicity, percent_below_poverty_level, ethnicity_greater_than, ethnicity_less_than,
                  below_poverty_level_less_than, below_poverty_level_greater_than)
 # Part 1
-# test population_total
+# test population_totaal
 class TestPopulationTotal(unittest.TestCase):
     pass
     def test_population(self):
